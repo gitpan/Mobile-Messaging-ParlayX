@@ -6,7 +6,7 @@ WriteMakefile(
 	'PREREQ_PM'	=> {
     		'LWP::UserAgent'	=> 0,
     		'HTTP::Request'		=> 0,
-    		'XML::LibXML'		=> 0,
+    		'XML::LibXML'		=> 1.62,
 	},
 	'clean'		=> {
 		'FILES'		=> 'Mobile-Messaging-ParlayX-*'

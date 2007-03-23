@@ -1,4 +1,4 @@
-# Mobile::Messaging::ParlayX.pm version 0.0.1
+# Mobile::Messaging::ParlayX.pm version 0.0.2
 #
 # Copyright (c) 2006 Thanos Chatziathanassioy <tchatzi@arx.net>. All rights reserved.
 # This program is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK);
 @EXPORT = qw();   #&new);
 @EXPORT_OK = qw(@error_str);
 
-$Mobile::Messaging::ParlayX::VERSION='0.0.1';
+$Mobile::Messaging::ParlayX::VERSION='0.0.2';
 $Mobile::Messaging::ParlayX::ver=$Mobile::Messaging::ParlayX::VERSION;
 
 use strict 'vars';
@@ -29,7 +29,7 @@ use XML::LibXML();
 
 Mobile::Messaging::ParlayX - Interface to ParlayX OSA.
 
-Version 0.0.1
+Version 0.0.2
 
 =head1 SYNOPSIS
 
@@ -39,15 +39,15 @@ Version 0.0.1
 
 C<Mobile::Messaging::ParlayX> is an interface to ParlayX web service by Sony Ericsson for SMS and MMS messaging,
 among other things.
-This being a Web Service C<SOAP::Lite> would probably be better suited to the task, but I decided to stick with
-C<LWP::UserAgent>, C<HTTP::Request> and C<XML::LibXML> until things in SOAP::Lite stabilize (it is currently
+This being a Web Service L<SOAP::Lite> would probably be better suited to the task, but I decided to stick 
+with C<LWP::UserAgent>, C<HTTP::Request> and C<XML::LibXML> until things in C<SOAP::Lite> stabilize (it is currently
 under rewrite as far as I know) and I have more time (not that this will happen anytime soon).
 Besides, I cannot fully grasp ParlayX just yet, thanks to inadequate documentation and JAVA only code 
 samples for it.
-Anyway, you need C<LWP::UserAgent>, C<HTTP::Request> and C<XML::LibXML> for this module to work.
+Anyway, you need L<LWP::UserAgent> , L<HTTP::Request> and L<XML::LibXML> for this module to work.
 Most are in the standard distribution already, but any of them are available at your local CPAN mirror.
 
-I tried not to stray too far off the ``native'' JAVA names of methos and properties, but chances are some 
+I tried not to stray too far off the ``native'' JAVA names of method and properties, but chances are some 
 differences exist.
 
 =head1 new Mobile::Messaging::ParlayX
@@ -133,7 +133,7 @@ sub initialize {
 	$self->{'DEBUG'} ||= 0;
 	
 	$self->{'ua'} = new LWP::UserAgent;
-	$self->{'ua'}->agent("Mobile::Messaging::ParlayX/0.0.1");
+	$self->{'ua'}->agent("Mobile::Messaging::ParlayX/0.0.2");
 	
 	$self->{'parser'} = XML::LibXML->new();
 	
@@ -149,26 +149,28 @@ sub initialize {
 =item sendSMS
 
 C<>=> Pretty much finished. It would be highly unusable without named arguments, so call it like so:
-$self->sendSMS( { 
-	username => 'Your ParlayX Username',
-	host => 'ParlayX SMS Gateway',
-	password => 'Password',
-	nonce => 'No Idea What This Does',
-	senderName => 'Where The SMS will Seem to Come From',
-	message => 'The actual sms message',
-	addresses => 'Recipient(s)',
-	receiptRequest => { 
-		endpoint => 'URI where the reciept will be sent',
-		interfaceName => 'Never used that one and dont quite know what it is',
-		correlator => 'Unique ID of the receiver'
-	}
-	ChargingInformation => {
-		description => 'Arbitrary string describing the reason for the MT charge',
-		currency => 'Should be self-explanatory, but my operator does not use it',
-		amount => 'Ditto, because these are inside argument code',
-		code => 'Instead of amount and currency, you have these pre-packaged in code'
+
+	$self->sendSMS( { 
+		username => 'Your ParlayX Username',
+		host => 'ParlayX SMS Gateway',
+		password => 'Password',
+		nonce => 'No Idea What This Does',
+		senderName => 'Where The SMS will Seem to Come From',
+		message => 'The actual sms message',
+		addresses => 'Recipient(s)',
+		receiptRequest => { 
+			endpoint => 'URI where the reciept will be sent',
+			interfaceName => 'Never used that one and dont quite know what it is',
+			correlator => 'Unique ID of the receiver'
 		}
-} );
+		ChargingInformation => {
+			description => 'Arbitrary string describing the reason for the MT charge',
+			currency => 'Should be self-explanatory, but my operator does not use it',
+			amount => 'Ditto, because these are inside argument code',
+			code => 'Instead of amount and currency, you have these pre-packaged in code'
+			}
+	} );
+
 Obviously username, host, message and addresses are mandatory for anything to work at all, the rest
 can be filled in according to your requirements. Your operator should give you a pretty good idea
 what`s neccessary and what is not.
@@ -236,13 +238,14 @@ sub sendSMS {
 =item getSmsDeliveryStatus
 
 C<>=> Pretty much finished too. It would be highly unusable without named arguments, so call it like so:
-$self->getSmsDeliveryStatus( { 
-	username => 'Your ParlayX Username',
-	host => 'ParlayX SMS Gateway',
-	password => 'Password',
-	nonce => 'No Idea What This Does',
-	messageid => 'A message unique ID, obtained from sendSMS() above',
-} );
+
+	$self->getSmsDeliveryStatus( { 
+		username => 'Your ParlayX Username',
+		host => 'ParlayX SMS Gateway',
+		password => 'Password',
+		nonce => 'No Idea What This Does',
+		messageid => 'A message unique ID, obtained from sendSMS() above',
+	} );
 
 Needs username, host and messageid for anything to work at all, the rest
 can be filled in according to your requirements. Your operator should give you a pretty good idea
@@ -300,13 +303,14 @@ sub getSmsDeliveryStatus {
 =item ReceiveSms
 
 C<>=> Works quite well for me YMMV. 
-$self->ReceiveSms( { 
-	username => 'Your ParlayX Username',
-	host => 'ParlayX SMS Gateway',
-	password => 'Password',
-	nonce => 'No Idea What This Does',
-	registrationIdentifier => 'Never seen this used, so dont know what it does - username should be enough to identify you',
-} );
+
+	$self->ReceiveSms( { 
+		username => 'Your ParlayX Username',
+		host => 'ParlayX SMS Gateway',
+		password => 'Password',
+		nonce => 'No Idea What This Does',
+		registrationIdentifier => 'Never seen this used, so dont know what it does - username should be enough to identify you',
+	} );
 
 This is the polling interface for receiving SMS from ParlayX. Using it will result in ParlayX
 ``de-spooling'' awaiting SMSs for you.
@@ -367,24 +371,26 @@ C<>=>
 $self->ReceiveAutoSms($incoming_soap_post);
 
 This is the other (lets call on-demand) interface for receiving SMS from ParlayX.
-You need to register yourself with the gateway (see startSmsNotification() and stopSmsNotification() below)
-and then, whenver you have an incoming SMS, the gateway will POST any SMS to the URI you specified there.
+You need to register yourself with the gateway (see C<startSmsNotification()> and C<stopSmsNotification()> below)
+and then, whenever you have an incoming SMS, the gateway will POST any SMS to the URI you specified there.
 Returns a hash reference containing message, senderAddress and the number the SMS was sent to (smsServiceActivationNumber).
-Due to peculiarities (for lack of a better word, an example, written in mod_perl/Apache::ASP, URI accepting SMS follows).
-<%
-	use strict;
-	use Mobile::Messaging::ParlayX;
-	my $incoming = $Request->BinaryRead();
-	$incoming =~ s|<message>|<result>|s;
-	$incoming =~ s|(smsServiceActivationNumber>.*?)</message>|$1</result>|s;
-	my $ret = $sms->ReceiveAutoSms(\$incoming);
-%>
+An example, written in mod_perl/Apache::ASP, script accepting SMS follows.
+
+	<%
+		use strict;
+		use Mobile::Messaging::ParlayX;
+		my $incoming = $Request->BinaryRead();
+		$incoming =~ s|<message>|<result>|s;
+		$incoming =~ s|(smsServiceActivationNumber>.*?)</message>|$1</result>|s;
+		my $ret = $sms->ReceiveAutoSms(\$incoming);
+	%>>
+
 In the example above, now $ret->{'message'} contains the SMS, $ret->{'smsServiceActivationNumber'} contains the number
 the SMS was sent to (but prefixed with ``tel:'' so you might want to remove this before replying) and $ret->{'senderAddress'}
 contains the number of the person who sent the SMS (which can be used as is in the reply).
-Due to (our operator`s only ?) ParlayX being slightly liberal (again, for lack of a better word) it uses <message>, while it
-meant result. The regex is there to make the message compatible with ReceiveSms() parsing above.
-Also note the use of \\$incoming: In general, I try to avoid copying large strings back and forth and most of the module
+Due to (our operator`s only ?) ParlayX being slightly liberal (for lack of a better word) it uses <message>, while it
+meant <result>. The regex is there to make the message compatible with ReceiveSms() parsing above.
+Also note the use of ``\$incoming'': In general, I try to avoid copying large strings back and forth and most of the module
 will happily accept a scalar or a reference when either would apply. So you could use 
 ``my $ret = $sms->ReceiveAutoSms($incoming);'' instead if you feel more comfortable with it.
 Personally, I designed it so I could use ``my $ret = $sms->ReceiveAutoSms(\$Request->BinaryRead());'' and I would too, 
@@ -424,15 +430,16 @@ sub ReceiveAutoSms {
 =item stopSmsNotification
 
 C<>=> 
-$self->stopSmsNotification( { 
-	username => 'Your ParlayX Username',
-	host => 'ParlayX SMS Gateway',
-	password => 'Password',
-	nonce => 'No Idea What This Does',
-	correlator => 'Unique Identifier for you (assigned when you did startSmsNotification()'
-} );
 
-if you previously registered yourself with ParlayX with startSmsNotification() and you do not want to automatically
+	$self->stopSmsNotification( { 
+		username => 'Your ParlayX Username',
+		host => 'ParlayX SMS Gateway',
+		password => 'Password',
+		nonce => 'No Idea What This Does',
+		correlator => 'Unique Identifier for you (assigned when you did startSmsNotification()'
+	} );
+
+if you previously registered yourself with ParlayX with C<startSmsNotification()> and you do not want to automatically
 recieve SMS from now on, use this. It tells ParlayX to stop sending you SMS to the URI you specified.
 You`ll probably never have to use this, but it is included for the sake of completeness.
 I have no idea if it works without a correlator (mine doesn`t), but if you implementation is different, feel free to
@@ -482,19 +489,20 @@ sub stopSmsNotification {
 =item startSmsNotification
 
 C<>=> 
-$self->startSmsNotification( { 
-	username => 'Your ParlayX Username',
-	host => 'ParlayX SMS Gateway',
-	password => 'Password',
-	nonce => 'No Idea What This Does',
-	endpoint => 'YOUR URI that ParlayX will send SMS to',
-	correlator => 'A unique ID for you (more on this later)',
-	interfaceName => 'No idea..always empty as far as I know'
-} );
+
+	$self->startSmsNotification( { 
+		username => 'Your ParlayX Username',
+		host => 'ParlayX SMS Gateway',
+		password => 'Password',
+		nonce => 'No Idea What This Does',
+		endpoint => 'YOUR URI that ParlayX will send SMS to',
+		correlator => 'A unique ID for you (more on this later)',
+		interfaceName => 'No idea..always empty as far as I know'
+	} );
 
 To register yourself with ParlayX you need to use this. After you do, all SMS to your number will be sent to the
 URI you specify in ``endpoint''.
-if you do not specify a correlator, time() will be used.
+if you do not specify a correlator, L<time()|perlfunc/time> will be used.
 Returns 3 scalars, the first indicating success (1) or failure (0), the second your designated correlator (keep this
 somewhere safe) and the third will normall be empty, except for error cases, where it will contain extended error
 information.
@@ -580,7 +588,7 @@ sub startSmsNotification {
 =item charging_info
 
 C<>=> In very particular order, the top 4 things are not very likely to change anytime soon, 
-unless SOAP::Lite transforms into something usable by a poor smuck like me soon.
+unless L<SOAP::Lite> transforms into something usable by a poor smuck like me soon.
 About the rest, I do not know, especially charging_info and receipt_request are only written
 based on (shoddy) documentation and have never been used in real life.
 
@@ -970,7 +978,11 @@ sub doHTTP {
 
  0.0.1 
 	Initial Release
-
+ 0.0.2 
+	Requisite XML::LibXML 1.62 specified in Makefile.PL
+	Fixed some POD formatting issues
+	Fixed some POD typos
+	
 =head1 Caveats
 	
 I really mean to split this to Mobile::Messaging::ParlayX::SMS, 
@@ -978,7 +990,7 @@ Mobile::Messaging::ParlayX::MMS and Mobile::Messaging::ParlayX::TS
 (Terminal Status), but I really ran out of time. Perhaps in the future (along with
 better SOAP handling).
 while on the subject of SOAP handling, I use XML::LibXML to validate all objects
-before sending, receiving or processing them, but this is obviously one are that
+before sending, receiving or processing them, but this is obviously one area that
 needs quite a lot of work.
 I`ve also done very little in terms of charsets, partly because my operator was in
 no position to tell me and partly because I was lazy. I have no clue what happens
@@ -988,14 +1000,17 @@ further into this.
 
 =head1 BUGS
 
-Initial release...what did you expect ;)
+Initial release...what did you expect ;) - well, not any more, but 0.0.2 fixes 
+were purely cosmetic in nature.
 Seriously now, most of the stuff is confirmed to work but probably not all angles 
 are covered (in fact, I suspect very few are).
 
-=head1 DISCLAIMER
+=head1 ACKNOWLEDGEMENTS
 
-This module borrowed its OO interface from Mail::Sender.pm Version : 0.8.00 
-which is available on CPAN.
+Obvious thanks to LWP::UserAgent, HTTP::Request and XML::LibXML authors, for none
+of this would be possible without them (although some may argue that this would be
+a good thing).
+Big thanks should also go to Joshua Chamas for Apache::ASP and the mod_perl gurus.
 
 =head1 AUTHOR
 
