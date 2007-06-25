@@ -1,4 +1,4 @@
-# Mobile::Messaging::ParlayX.pm version 0.0.2
+# Mobile::Messaging::ParlayX.pm version 0.0.3
 #
 # Copyright (c) 2006 Thanos Chatziathanassioy <tchatzi@arx.net>. All rights reserved.
 # This program is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK);
 @EXPORT = qw();   #&new);
 @EXPORT_OK = qw(@error_str);
 
-$Mobile::Messaging::ParlayX::VERSION='0.0.2';
+$Mobile::Messaging::ParlayX::VERSION='0.0.3';
 $Mobile::Messaging::ParlayX::ver=$Mobile::Messaging::ParlayX::VERSION;
 
 use strict 'vars';
@@ -29,7 +29,7 @@ use XML::LibXML();
 
 Mobile::Messaging::ParlayX - Interface to ParlayX OSA.
 
-Version 0.0.2
+Version 0.0.3
 
 =head1 SYNOPSIS
 
@@ -133,7 +133,7 @@ sub initialize {
 	$self->{'DEBUG'} ||= 0;
 	
 	$self->{'ua'} = new LWP::UserAgent;
-	$self->{'ua'}->agent("Mobile::Messaging::ParlayX/0.0.2");
+	$self->{'ua'}->agent("Mobile::Messaging::ParlayX/0.0.3");
 	
 	$self->{'parser'} = XML::LibXML->new();
 	
@@ -858,7 +858,7 @@ sub charging_info {
 	}
 	
 	if ( ($ci->{'currency'} && $ci->{'amount'}) || $ci->{'code'} ) {
-		return qq[<ns2:ChargingInformation> $ci->{'currency'} $ci->{'amount'} $ci->{'description'} $ci->{'code'} </ns2:ChargingInformation>];
+		return qq[<ns2:charging> $ci->{'currency'} $ci->{'amount'} $ci->{'description'} $ci->{'code'} </ns2:charging>];
 	}
 	else {
 		return '';
@@ -982,6 +982,8 @@ sub doHTTP {
 	Requisite XML::LibXML 1.62 specified in Makefile.PL
 	Fixed some POD formatting issues
 	Fixed some POD typos
+ 0.0.3
+	Corrected tag ``ChargingInformation'' to ``charging'' in sub charging_info, as per documentation
 	
 =head1 Caveats
 	
